@@ -7,8 +7,9 @@ A collection of shell scripts to discover and audit AWS resources across your ac
 - **Individual Resource Discovery**: Run targeted scans for specific AWS resource types
 - **Master Aggregation Script**: Scan all resource types at once with consolidated reporting
 - **Multiple Output Formats**: JSON (raw data), Table (quick view), or Human-readable (detailed)
+- **Draw.io Infrastructure Diagrams**: Auto-generate visual architecture diagrams in draw.io format
 - **Timestamped Reports**: All outputs are timestamped for audit trails
-- **No Dependencies**: Uses only AWS CLI and standard Unix tools (jq, bash)
+- **Minimal Dependencies**: Uses only AWS CLI, Python3, and standard Unix tools (jq, bash)
 
 ## Resource Types Supported
 
@@ -217,6 +218,7 @@ output/
 └── report_20251124_143022/
     ├── SUMMARY.txt                          # Resource counts and metadata
     ├── CONSOLIDATED_REPORT.txt              # All human-readable reports combined
+    ├── aws-infrastructure.drawio            # Visual infrastructure diagram (NEW!)
     ├── discovery.log                        # Script execution log
     ├── iam-roles_20251124_143022.json       # Raw IAM roles data
     ├── iam-roles_20251124_143022_human.txt  # Human-readable IAM roles
@@ -255,6 +257,42 @@ EC2 Instances: 4
 S3 Buckets: 3
 VPCs: 1
 ```
+
+### Draw.io Infrastructure Diagram
+
+The master aggregation script automatically generates a visual infrastructure diagram in draw.io format. This diagram includes:
+
+**Diagram Features:**
+- **VPC Container**: Shows your VPC with CIDR block as a swimlane
+- **EC2 Instances**: Color-coded boxes (green=running, red=stopped) with instance details
+- **S3 Buckets**: Cylinder shapes positioned outside the VPC
+- **IAM Roles**: Hexagon shapes showing roles and their purposes
+- **Auto-layout**: Resources automatically positioned for clarity
+
+**How to use:**
+1. Open the generated `aws-infrastructure.drawio` file
+2. Visit https://app.diagrams.net (or use desktop app)
+3. Click "Open Existing Diagram"
+4. Select the `.drawio` file from your report directory
+5. Edit, annotate, and export as needed (PNG, PDF, SVG)
+
+**Standalone Usage:**
+
+You can also run the diagram generator independently:
+
+```bash
+# Generate diagram for current report directory
+python3 scripts/generate-drawio.py output/report_20251124_143022/
+
+# Or specify custom output directory
+python3 scripts/generate-drawio.py /path/to/output/
+```
+
+The diagram is perfect for:
+- Architecture documentation
+- Security reviews and presentations
+- Onboarding new team members
+- Visualizing multi-account AWS Organizations
 
 ## Use Cases
 
@@ -422,7 +460,8 @@ aws-scripts/
 │   ├── discover-iam-policies.sh     # IAM policies discovery
 │   ├── discover-ec2-instances.sh    # EC2 instances discovery
 │   ├── discover-s3-buckets.sh       # S3 buckets discovery
-│   └── discover-vpcs.sh             # VPCs discovery
+│   ├── discover-vpcs.sh             # VPCs discovery
+│   └── generate-drawio.py           # Draw.io diagram generator
 ├── output/                          # Generated reports (gitignored)
 └── docs/                            # Additional documentation
 ```
@@ -440,7 +479,10 @@ Contributions are welcome! To add a new resource discovery script:
 
 ## Roadmap
 
-Future enhancements planned:
+### Completed
+- [x] **Draw.io diagram export** - Auto-generate visual architecture diagrams
+
+### Planned Enhancements
 
 - [ ] Add Lambda functions discovery
 - [ ] Add RDS databases discovery

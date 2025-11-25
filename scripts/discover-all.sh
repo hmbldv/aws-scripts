@@ -143,9 +143,24 @@ if [ "$FORMAT" == "human" ]; then
   echo -e "${GREEN}📄 Consolidated report: $CONSOLIDATED_REPORT${NC}"
 fi
 
+# Generate draw.io diagram
+echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║            Generating draw.io Infrastructure Diagram         ║${NC}"
+echo -e "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
+
+if command -v python3 &> /dev/null; then
+  python3 ./generate-drawio.py "$REPORT_DIR" 2>&1 | tee -a "$REPORT_DIR/discovery.log"
+  if [ -f "$REPORT_DIR/aws-infrastructure.drawio" ]; then
+    echo -e "${GREEN}📊 Draw.io diagram: $REPORT_DIR/aws-infrastructure.drawio${NC}"
+  fi
+else
+  echo -e "${YELLOW}⚠️  Python3 not found - skipping draw.io diagram generation${NC}"
+fi
+
 echo ""
 echo -e "${BLUE}Next Steps:${NC}"
 echo -e "  1. Review the discovery reports in: ${GREEN}$REPORT_DIR${NC}"
-echo -e "  2. Identify resources not managed by Terraform"
-echo -e "  3. Use terraform import or code generation tools"
+echo -e "  2. Open aws-infrastructure.drawio in draw.io for visual diagram"
+echo -e "  3. Identify resources not managed by Terraform"
+echo -e "  4. Use terraform import or code generation tools"
 echo ""
