@@ -1,0 +1,30 @@
+# Output files
+output/
+*.json
+*.txt
+*.log
+
+# Backup files
+*.bak
+*~
+
+# macOS
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+terraform.tfvars
+
+# AWS credentials (extra safety)
+credentials
+config
+*.pem
+*.key
