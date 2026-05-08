@@ -1,6 +1,6 @@
 # AWS Resource Discovery Scripts
 
-A collection of shell scripts to discover and audit AWS resources across your accounts. These scripts help identify resources created outside Infrastructure as Code (IaC) tools like Terraform, making it easier to bring your infrastructure under version control.
+Lightweight AWS resource discovery scripts for security and compliance teams. Identify resources that exist outside your IaC — the unmanaged EC2 instances, untagged IAM roles, and forgotten S3 buckets that create audit gaps and Terraform import backlogs.
 
 ## Features
 
@@ -10,6 +10,7 @@ A collection of shell scripts to discover and audit AWS resources across your ac
 - **Draw.io Infrastructure Diagrams**: Auto-generate visual architecture diagrams in draw.io format
 - **Timestamped Reports**: All outputs are timestamped for audit trails
 - **Minimal Dependencies**: Uses only AWS CLI, Python3, and standard Unix tools (jq, bash)
+- **Read-Only and Safe**: All scripts are read-only — no mutations, no side effects. Safe to run in production accounts.
 
 ## Resource Types Supported
 
@@ -160,7 +161,7 @@ Run all discovery scripts at once:
 
 ### JSON Format
 
-Raw AWS CLI JSON output suitable for programmatic processing:
+Raw AWSCLI JSON output suitable for programmatic processing:
 
 ```bash
 ./discover-iam-roles.sh json
@@ -195,7 +196,7 @@ Detailed, formatted reports with all resource metadata:
 **Example:**
 ```
 S3 Buckets Discovery Report
-===========================
+============================
 
 Bucket: terraform-state-266735821834-us-west-1
   Region: us-west-1
@@ -250,7 +251,7 @@ Scan Date: 2025-11-24 14:30:22
 
 Resource Counts
 ---------------
-IAM Roles (non-AWS): 12
+IAT-RVles (non-AWS): 12
 OIDC Providers: 1
 IAM Policies (Customer-Managed): 5
 EC2 Instances: 4
@@ -456,14 +457,14 @@ aws-scripts/
 ├── scripts/                         # Discovery scripts
 │   ├── discover-all.sh              # Master aggregation script
 │   ├── discover-iam-roles.sh        # IAM roles discovery
-│   ├── discover-oidc-providers.sh   # OIDC providers discovery
+│   ├── discover-oidc-providers.sh    # OIDC providers discovery
 │   ├── discover-iam-policies.sh     # IAM policies discovery
 │   ├── discover-ec2-instances.sh    # EC2 instances discovery
 │   ├── discover-s3-buckets.sh       # S3 buckets discovery
 │   ├── discover-vpcs.sh             # VPCs discovery
 │   └── generate-drawio.py           # Draw.io diagram generator
 ├── output/                          # Generated reports (gitignored)
-└── docs/                            # Additional documentation
+└── docs/                             # Additional documentation
 ```
 
 ## Contributing
